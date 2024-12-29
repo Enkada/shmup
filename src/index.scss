@@ -1,0 +1,228 @@
+@font-face {
+    font-family: sperrypc8x16;
+    src: url('/font/sperrypc8x16.eot');
+    src: url('/font/sperrypc8x16.eot?#iefix') format("embedded-opentype"),url('/font/sperrypc8x16.woff2') format("woff2"),url('/font/sperrypc8x16.woff') format("woff"),url('/font/sperrypc8x16.ttf') format("truetype");
+    font-weight: 400;
+    font-style: normal
+}
+
+@font-face {
+    font-family: ibmvga8;
+    src: url("/font/ibm_vga8.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    color-scheme: dark;
+    --font-family: ibmvga8, monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    overflow: hidden;
+}
+
+.game {
+    width: 100vw;
+    height: 100vh;  
+
+    box-shadow: inset 0 0 48px 24px hsla(0, 0%, 0%, 0.5);
+    
+    background-image: url("https://txtrs.ru/textures/grass/grass-2.jpg");
+    background-position: var(--background-offset-x) var(--background-offset-y);
+}
+
+.ui {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
+.info {
+    position: absolute;
+    bottom: 0;
+    padding: .5em;
+}
+
+.xp {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 20px;
+    background-color: hsl(230, 35%, 24%);
+    opacity: .9;
+
+    --progress: 0%;
+
+    &__bar {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: var(--progress);
+        height: 100%;
+        background-color: hsl(230, 35%, 50%);
+        transition: width .2s ease;
+    }
+
+    &__text {
+        position: absolute;
+        top: 50%; 
+        left: .5em;
+        transform: translateY(-50%);
+        opacity: .5;
+    }
+}
+
+.health {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% 64px;
+    width: 86px;
+    height: 12px;
+    background-color: hsl(0, 35%, 24%);
+    overflow: hidden;
+
+    --progress: 0%;
+
+    &__bar {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: var(--progress);
+        height: 100%;
+        background-color: hsl(0, 54%, 35%);
+        transition: width .2s ease;
+    }
+}
+
+
+.upgrade-list {
+    position: absolute;
+    top: calc(20px + .5em);
+    left: .5em;
+    display: grid;
+    gap: .5em;
+
+    .upgrade {
+        width: 48px;
+        aspect-ratio: 1 / 1;
+        border: 2px solid gray;
+        background-size: cover;
+        image-rendering: pixelated;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &__level {
+            font-size: 1.5em;
+            line-height: 1;
+            padding: 3px 0 0 1px;
+            --clr-shadow: black;
+            text-shadow: 
+                -2px -2px 1px var(--clr-shadow), 
+                2px -2px 1px var(--clr-shadow), 
+                -2px 2px 1px var(--clr-shadow), 
+                2px 2px 1px var(--clr-shadow);
+        }
+    }
+}
+
+.upgrade-selection {
+    position: absolute;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+
+    @keyframes upgrade-selection {
+        to {
+            backdrop-filter: blur(4px);
+            background-color: hsla(0, 0%, 0%, 0.5);
+        }
+    }
+    animation: upgrade-selection 1s ease forwards;
+
+    .upgrade {
+        background-color: hsla(0, 0%, 0%, 0.5);
+        text-align: center;
+        width: 200px;
+        border: 2px solid;
+        cursor: pointer;
+
+        transition: scale .3s ease, box-shadow .3s ease;
+
+        --clr-accent: hsl(0, 0%, 90%);
+        color: var(--clr-accent);
+        border-color: var(--clr-accent);
+
+
+        @keyframes upgrade {
+            to {
+                transform: scale(1);
+            }
+        }
+        transform: scale(0);
+        animation: upgrade .5s ease forwards;
+        animation-delay: calc(var(--index) * .1s);
+
+        &:hover {
+            scale: 1.1;
+            box-shadow: 0 0 24px 0px var(--clr-accent);
+        }
+
+        &.unique {
+            --clr-accent: gold;
+
+            &:hover {
+                box-shadow: 0 0 32px 0px var(--clr-accent);
+            }
+        }
+
+        &.rare {
+            --clr-accent: rgb(38, 114, 255);
+        }
+
+        img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            image-rendering: pixelated;
+
+            scale: 1.3;
+            margin-top: 1.5em;
+            mask-image: radial-gradient(black 40%, transparent 70%);
+        }
+        overflow: hidden;
+
+        &__name {
+            padding: .5em;
+        }
+
+        &__description {
+            padding: 1em;
+            height: 100px;
+            // center
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .value {
+                color: lime;
+            }
+        }
+    }
+}
